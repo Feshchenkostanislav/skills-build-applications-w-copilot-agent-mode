@@ -10,6 +10,9 @@ const config_1 = require("./config");
 const database_1 = require("./config/database");
 const routes_1 = require("./routes");
 const app = (0, express_1.default)();
+const CODESPACE_API_URL = config_1.CODESPACE_NAME
+    ? `https://${config_1.CODESPACE_NAME}-8000.app.github.dev`
+    : null;
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 app.get('/api/health', (_req, res) => {
@@ -18,8 +21,9 @@ app.get('/api/health', (_req, res) => {
 app.get('/api/config', (_req, res) => {
     res.json({
         apiUrl: config_1.API_BASE_URL,
-        port: config_1.PORT,
         codespaceName: config_1.CODESPACE_NAME ?? null,
+        codespaceUrl: CODESPACE_API_URL,
+        port: config_1.PORT,
     });
 });
 (0, routes_1.registerRoutes)(app);

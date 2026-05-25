@@ -5,6 +5,9 @@ import { connectDatabase } from './config/database';
 import { registerRoutes } from './routes';
 
 const app = express();
+const CODESPACE_API_URL = CODESPACE_NAME
+  ? `https://${CODESPACE_NAME}-8000.app.github.dev`
+  : null;
 
 app.use(cors());
 app.use(express.json());
@@ -16,8 +19,9 @@ app.get('/api/health', (_req, res) => {
 app.get('/api/config', (_req, res) => {
   res.json({
     apiUrl: API_BASE_URL,
-    port: PORT,
     codespaceName: CODESPACE_NAME ?? null,
+    codespaceUrl: CODESPACE_API_URL,
+    port: PORT,
   });
 });
 
