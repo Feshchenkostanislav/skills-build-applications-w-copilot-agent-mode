@@ -1,5 +1,10 @@
 import { useEffect, useState } from 'react';
 
+const codespaceName = import.meta.env.VITE_CODESPACE_NAME;
+const apiBaseUrl = codespaceName
+  ? `https://${codespaceName}-8000.app.github.dev`
+  : 'http://localhost:8000';
+
 const normalizeResponse = (payload) => {
   if (Array.isArray(payload)) {
     return payload;
@@ -19,7 +24,7 @@ const normalizeResponse = (payload) => {
   );
 };
 
-const Teams = ({ apiBaseUrl }) => {
+const Teams = () => {
   const [teams, setTeams] = useState([]);
   const [error, setError] = useState(null);
 
@@ -34,7 +39,7 @@ const Teams = ({ apiBaseUrl }) => {
       .catch((err) => {
         setError(`Failed to load teams from ${endpoint}: ${err.message}`);
       });
-  }, [apiBaseUrl]);
+  }, []);
 
   return (
     <main>
