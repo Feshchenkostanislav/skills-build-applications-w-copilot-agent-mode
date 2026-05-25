@@ -1,0 +1,65 @@
+import { useEffect, useState } from 'react';
+
+const codespaceName = import.meta.env.VITE_CODESPACE_NAME;
+
+const normalizeResponse = (payload) => {
+  if (Array.isArray(payload)) {
+    return payload;
+  }
+
+  if (!payload || typeof payload !== 'object') {
+    return [];
+  }
+
+  return (
+    payload.teams ||
+    payload.data ||
+    payload.items ||
+    payload.results ||
+    payload.records ||
+    []
+  );
+};
+
+const Teams = () => {
+  const [teams, setTeams] = useState([]);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const endpoint = codespaceName
+      ? `https://${codespaceName}-8000.app.github.dev/api/teams/`
+      : 'http://localhost:8000/api/teams/';
+
+    fetch(endpoint)
+      .then((res) => res.json())
+      .then((data) => {
+        setTeams(normalizeResponse(data));
+      })
+      .catch((err) => {
+        setError(`Failed to load teams from ${endpoint}: ${err.message}`);
+      });
+  }, []);
+
+  return (
+    <main>
+      <h2>Teams</h2>
+      <p>Endpoint: /api/teams/</p>
+      {error && <div className="error">{error}</div>}
+      <div className="cards">
+        {teams.length === 0 ? (
+          <div>No teams found.</div>
+        ) : (
+          teams.map((team) => (
+            <article key={team.id ?? team._id ?? team.name} className="card">
+              <h3>{team.name}</h3>
+              <p>{team.description ?? 'No description available.'}</p>
+              <p>Members: {Array.isArray(team.members) ? team.members.length : team.members ?? 'N/A'}</p>
+            </article>
+          ))
+        )}
+      </div>
+    </main>
+  );
+};
+
+export default Teams;
