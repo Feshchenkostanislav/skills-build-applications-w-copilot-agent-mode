@@ -4,7 +4,7 @@ import { Leaderboard } from '../models/leaderboard';
 import { Team } from '../models/team';
 import { User } from '../models/user';
 import { Workout } from '../models/workout';
-import { connectDatabase } from '../database';
+import { connectDatabase } from '../config/database';
 import { MONGO_URI } from '../config';
 
 // Seed the octofit_db database with test data.

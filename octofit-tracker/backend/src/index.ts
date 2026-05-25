@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import { API_BASE_URL, HOST, PORT } from './config';
-import { connectDatabase } from './database';
+import { connectDatabase } from './config/database';
 import { registerRoutes } from './routes';
 
 const app = express();

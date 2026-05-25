@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const config_1 = require("./config");
-const database_1 = require("./database");
+const database_1 = require("./config/database");
 const routes_1 = require("./routes");
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
