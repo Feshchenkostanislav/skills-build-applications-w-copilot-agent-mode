@@ -4,13 +4,14 @@ import { Leaderboard } from '../models/leaderboard';
 import { Team } from '../models/team';
 import { User } from '../models/user';
 import { Workout } from '../models/workout';
+import { connectDatabase } from '../database';
+import { MONGO_URI } from '../config';
 
 // Seed the octofit_db database with test data.
-const MONGO_URI = process.env.MONGO_URI ?? 'mongodb://localhost:27017/octofit_db';
 
 const runSeed = async () => {
   console.log('Connecting to MongoDB...', MONGO_URI);
-  await mongoose.connect(MONGO_URI);
+  await connectDatabase();
 
   console.log('Clearing existing collections...');
   await Promise.all([

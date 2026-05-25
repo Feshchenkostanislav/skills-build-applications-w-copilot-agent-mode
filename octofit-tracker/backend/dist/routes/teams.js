@@ -1,31 +1,24 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
+const models_1 = require("../models");
 const router = (0, express_1.Router)();
-router.get('/', (_req, res) => {
-    res.json({
-        teams: [
-            {
-                id: 'team-1',
-                name: 'OctoFit Runners',
-                members: 12,
-            },
-        ],
-    });
+router.get('/', async (_req, res) => {
+    const teams = await models_1.Team.find().populate('members', 'name email role');
+    res.json({ teams });
 });
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
+    const team = await models_1.Team.create(req.body);
     res.status(201).json({
         message: 'Team created',
-        team: req.body,
+        team,
     });
 });
-router.get('/:id', (req, res) => {
-    res.json({
-        team: {
-            id: req.params.id,
-            name: 'OctoFit Runners',
-            members: 12,
-        },
-    });
+router.get('/:id', async (req, res) => {
+    const team = await models_1.Team.findById(req.params.id).populate('members', 'name email role');
+    if (!team) {
+        return res.status(404).json({ message: 'Team not found' });
+    }
+    res.json({ team });
 });
 exports.default = router;

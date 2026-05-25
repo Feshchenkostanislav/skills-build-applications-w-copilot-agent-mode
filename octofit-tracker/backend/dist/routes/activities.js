@@ -1,23 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
+const models_1 = require("../models");
 const router = (0, express_1.Router)();
-router.get('/', (_req, res) => {
-    res.json({
-        activities: [
-            {
-                id: 'activity-1',
-                type: 'running',
-                durationMinutes: 45,
-                caloriesBurned: 420,
-            },
-        ],
-    });
+router.get('/', async (_req, res) => {
+    const activities = await models_1.Activity.find().sort({ date: -1 }).limit(50).populate('user', 'name email');
+    res.json({ activities });
 });
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
+    const activity = await models_1.Activity.create(req.body);
     res.status(201).json({
         message: 'Activity logged',
-        activity: req.body,
+        activity,
     });
 });
 exports.default = router;

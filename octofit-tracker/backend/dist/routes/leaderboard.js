@@ -1,21 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
+const models_1 = require("../models");
 const router = (0, express_1.Router)();
-router.get('/', (_req, res) => {
-    res.json({
-        leaderboard: [
-            {
-                rank: 1,
-                name: 'Ariel Athlete',
-                score: 980,
-            },
-            {
-                rank: 2,
-                name: 'Jordan Jumper',
-                score: 940,
-            },
-        ],
-    });
+router.get('/', async (_req, res) => {
+    const leaderboard = await models_1.Leaderboard.find().sort({ rank: 1 }).limit(20);
+    res.json({ leaderboard });
 });
 exports.default = router;

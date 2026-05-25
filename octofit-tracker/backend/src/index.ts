@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
-import mongoose from 'mongoose';
-import { API_BASE_URL, HOST, MONGO_URI, PORT } from './config';
+import { API_BASE_URL, HOST, PORT } from './config';
+import { connectDatabase } from './database';
 import { registerRoutes } from './routes';
 
 const app = express();
@@ -22,8 +22,7 @@ app.get('/api/config', (_req, res) => {
 
 registerRoutes(app);
 
-mongoose
-  .connect(MONGO_URI)
+connectDatabase()
   .then(() => {
     console.log('Connected to MongoDB');
     app.listen(PORT, HOST, () => {

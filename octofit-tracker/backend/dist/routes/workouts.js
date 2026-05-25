@@ -1,23 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
+const models_1 = require("../models");
 const router = (0, express_1.Router)();
-router.get('/', (_req, res) => {
-    res.json({
-        workouts: [
-            {
-                id: 'workout-1',
-                name: 'Full-Body HIIT',
-                durationMinutes: 30,
-                intensity: 'high',
-            },
-        ],
-    });
+router.get('/', async (_req, res) => {
+    const workouts = await models_1.Workout.find();
+    res.json({ workouts });
 });
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
+    const workout = await models_1.Workout.create(req.body);
     res.status(201).json({
         message: 'Workout created',
-        workout: req.body,
+        workout,
     });
 });
 exports.default = router;
