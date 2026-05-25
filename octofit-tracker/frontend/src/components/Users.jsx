@@ -1,9 +1,6 @@
 import { useEffect, useState } from 'react';
 
 const codespaceName = import.meta.env.VITE_CODESPACE_NAME;
-const apiBaseUrl = codespaceName
-  ? `https://${codespaceName}-8000.app.github.dev`
-  : 'http://localhost:8000';
 
 const normalizeResponse = (payload) => {
   if (Array.isArray(payload)) {
@@ -29,7 +26,9 @@ const Users = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const endpoint = `${apiBaseUrl}/api/users/`;
+    const endpoint = codespaceName
+      ? `https://${codespaceName}-8000.app.github.dev/api/users/`
+      : 'http://localhost:8000/api/users/';
 
     fetch(endpoint)
       .then((res) => res.json())
